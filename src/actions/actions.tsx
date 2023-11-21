@@ -73,36 +73,35 @@ export function orderByAttack(payload: number) {
 export function getTypes() {
     return async function (dispatch: Dispatch<Action>) {
         axios.get('http://localhost:3001/types')
-        .then((response) => {
-            dispatch({ type: 'GET_TYPES', payload: response.data })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+            .then((response) => {
+                dispatch({ type: 'GET_TYPES', payload: response.data })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 }
 
 export function postPokemon(payload: Pokemon) {
     return async function (dispatch: Dispatch<Action>) {
-        var response = await axios.post('http://localhost:3001/pokemon', payload);
-        console.log(payload)
-        console.log('LLEGUE A LA ACTION')
-        return response;
+        axios.post('http://localhost:3001/pokemon', payload)
+            .then((response) => {
+                console.log(payload);
+            })
+            .catch((error) => {
+                throw new Error("Error posting Pokemon");
+            })
     }
 }
 
 export function getDetail(id: number) {
     return async function (dispatch: Dispatch<Action>) {
-        try {
-            if (!id) {
-                return dispatch({ type: "GET_DETAILS" })
-            } else {
-                var json = await axios.get("http://localhost:3001/pokemons/" + id);
-                return dispatch({ type: "GET_DETAILS", payload: json.data })
-            }
-        }
-        catch (error) {
-            console.log(error)
-        }
+        axios.get("http://localhost:3001/pokemons/" + id)
+            .then((response) => {
+                dispatch({ type: 'GET_DETAILS', payload: response.data })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
 }
